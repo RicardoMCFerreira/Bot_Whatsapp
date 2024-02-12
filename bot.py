@@ -20,15 +20,23 @@ for linha in clientes.iter_rows(min_row=2):
 
     mensagem = f'Olá {nome} isto é uma mensagem de teste.'
 
-    # Criar links personalizados do whatsapp e enviar mensagens para cada contacto
-    link_mensagem_whatsapp = f'https://web.whatsapp.com/send?phone={
-        telefone}&text={quote(mensagem)}'
-    webbrowser.open(link_mensagem_whatsapp)
-    sleep(10)
+    try:
+        # Criar links personalizados do whatsapp e enviar mensagens para cada contacto
+        link_mensagem_whatsapp = f'https://web.whatsapp.com/send?phone={
+            telefone}&text={quote(mensagem)}'
+        webbrowser.open(link_mensagem_whatsapp)
+        sleep(10)
 
-    # descobrir a seta para enviar a mensagem
-    seta = pyautogui.locateCenterOnScreen(imagem_seta)
-    pyautogui.click(seta)
+        # descobrir a seta para enviar a mensagem
+        seta = pyautogui.locateCenterOnScreen(imagem_seta)
+        pyautogui.click(seta)
+
+    except:
+        # Se não for possivel enviar a mensagem apresenta o contaco no terminal
+        # e grava o contacto no ficheiro erros.csv
+        print(f'Não foi possível enviar mensagem para {nome}')
+        with open('erros.csv', 'a', newline='', encoding='utf-8') as arquivo:
+            arquivo.write(f'{nome},{telefone}{os.linesep}')
 
     # Fechar página para poder abrir uma nova mensagem
     sleep(2)
